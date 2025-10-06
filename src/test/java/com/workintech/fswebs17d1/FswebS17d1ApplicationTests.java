@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,12 +64,12 @@ class FswebS17d1ApplicationTests {
 	void shouldReturnAnimalById() throws Exception {
 
 		Animal newAnimal = new Animal(1, "maymun");
-		mockMvc.perform(post("/workintech/animal")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(newAnimal)))
-				.andExpect(status().isOk());
-		
-		mockMvc.perform(get("/workintech/animal/1"))
+        ResultActions resultActions = mockMvc.perform(post("/workintech/animal")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newAnimal)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/workintech/animal/1"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.name").value("maymun"));
